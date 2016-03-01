@@ -5,13 +5,14 @@
 /* GLOBAL VARIABLES */
 
 var file = { bool : false, cactus : 2, paired : false, username : "none", ip : "none" };
-var lights;
+var lights; // TODO: store this in cache / multiple homes-hubs / delete data
 
 /* MAIN FUNCTION CALLED ON PAGE LOAD */
 
 function audioFileLoaded() {
 	document.getElementById("main").innerHTML = "<div id=\"dancefloor\"></div><img src=\"bridge_v2.svg\" class=\"svg\" id=\"huebutton\"><div id=\"stopbutton\" title=\"Homepage\"><p>stop</p></div></a>";
 	rave();
+	get_ip();
 }
 
 /* HELPER DISCO FUNCTION */
@@ -49,25 +50,35 @@ function rave() {
 	// for phillips hue light integration
 	if ( file.paired == true ) {
 		for(light in lights) {
-			hue = Math.ceil(Math.random()*65535);
-			hue(hue,light);
+			color = Math.ceil(Math.random()*65535);
+			hue(color,light);
 		}
 	}
 
 	// repeat every eigth note on beat
 	file.cactus = file.cactus + 1;
-	setTimeout(function(){rave();},341);
+	setTimeout(function(){rave();}, /* CHANGE THIS NUMBER  ==> */ 341 /* <== CHANGE THIS NUMBER */);
 
 }
 
 /* PHILLIPS HUE FUNCTIONS */
 
-function hue(hue,light) {
-  var website = "http://"+data.ip+"/api/"+data.username+"/lights/"+light+"/state";
-  var data = {"transitiontime":"","hue":"0"};
-  data.hue = hue;
+function hue(color,light) {
+  var website = "http://"+file.ip+"/api/"+file.username+"/lights/"+light+"/state";
+  var data = {"transitiontime":0,"hue":""};
+  data.hue = color;
   $.ajax({
-    url: website + state,
+    url: website,
+    type: "PUT",
+    data: JSON.stringify(data)
+  });
+}
+
+function sat(light) {
+  var website = "http://"+file.ip+"/api/"+file.username+"/lights/"+light+"/state";
+  var data = {"sat":254};
+  $.ajax({
+    url: website,
     type: "PUT",
     data: JSON.stringify(data)
   });
@@ -107,7 +118,6 @@ function get_username(n) {
     if(pairing[0].error!=null) setTimeout(function(){get_username(n++)},500);
     if(pairing[0].success!=null) {
       file.username = pairing[0].success.username;
-			file.paired = true;
 			get_lights();
       return;
     }
@@ -121,6 +131,10 @@ function get_lights() {
     type: "GET",
   }).done(function (devices) {
 		lights = devices;
+		file.paired = true;
+		for(light in lights) {
+			sat(light);
+		}
 		return;
 	});
 }
