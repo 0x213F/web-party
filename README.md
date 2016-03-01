@@ -1,5 +1,7 @@
 **Status**: Debugging.
 
+----------
+
 This is a quick demo inspired by http://matmartinez.net/nsfw/.
 
 Follow these steps to customize the program:
