@@ -34,8 +34,8 @@ function rave() {
 	if ( b > 127 ) bN = r-128;
 	var aColor = "rgb(" + r + "," + g + "," + b + ")";
 	var bColor = "rgb(" + rN + "," + gN + "," + bN + ")";
-	var dancer = "<br><br><br><br><br><br><h1><img src=\"cactus/c" + file.cactus%4 + ".jpeg\" class=\"cactus\">"
-								 + "<img src=\"cactus/c" + (file.cactus+2)%4 + ".jpeg\" class=\"cactus\">"
+	var dancer = "<br><br><br><br><br><br><h1><img src=\"c" + file.cactus%4 + ".jpeg\" class=\"cactus\">"
+								 + "<img src=\"c" + (file.cactus+2)%4 + ".jpeg\" class=\"cactus\">"
 								 + "</h1><h1>PARTY TIME</h1>"; // TODO: make this less ugly
 
 	// update document style
