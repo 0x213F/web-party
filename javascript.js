@@ -13,6 +13,15 @@ function audioFileLoaded() {
 	document.getElementById("main").innerHTML = "<div id=\"dancefloor\"></div><img src=\"bridge_v2.svg\" class=\"svg\" id=\"huebutton\"><div id=\"stopbutton\" title=\"Homepage\"><p>stop</p></div></a>";
 	rave();
 	get_ip();
+	$('#stopbutton').on('click', function(){
+			if ( file.bool == false) {
+				document.getElementById("main").innerHTML = "<p>sorry</p>";
+				document.body.style.backgroundColor = "#000";
+				document.body.style.color = "#FFF";
+				file.bool = true;
+				document.getElementById("song").muted = true;
+			}
+	});
 }
 
 /* HELPER DISCO FUNCTION */
@@ -76,7 +85,7 @@ function hue(color,light) {
 
 function sat(light) {
   var website = "http://"+file.ip+"/api/"+file.username+"/lights/"+light+"/state";
-  var data = {"sat":254};
+  var data = {"transitiontime":0,"sat":254};
   $.ajax({
     url: website,
     type: "PUT",
